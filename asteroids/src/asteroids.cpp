@@ -1,7 +1,5 @@
-/* Asteroids
-    Sample solution for assignment
-    Semester 2 -- Small Embedded Systems
-    Dr Alun Moon
+/*
+LIAM COX - W15011743 - CM0506 ASSIGNMENT
 */
 
 /* C libraries */
@@ -19,52 +17,58 @@
 #include "model.h"
 #include "view.h"
 #include "controller.h"
+#include "objects.h"
 
 /* Game state */
-float elapsed_time; 
+float elapsed_time;
 int   score;
-int   lives;
-struct ship player;
+int   lives = 3;
+int shields = 3;
+bool gameState = false;
+bool gameOver = false;
+
+aster_t *asteroids;
+Missle_t *Missles;
+int frames;
+int asterCount; int MissleCount;
+/////////////////////////////////////////////////////////////
+////////////////SHIP POSITION DATA///////////////////////////
+/////////////////////////////////////////////////////////////
+double 	shipCenterHor = 240;
+double  shipCenterVert = 146;
+double 	shipTipHor;
+double 	shipTipVert;
+double	shipCnrLeftHor = shipCenterHor - 7;
+double 	shipCnrLeftVert = shipCenterVert + 10;
+double 	shipCnrRightHor = shipCenterHor + 7;
+double 	shipCnrRightVert = shipCenterVert + 10;
 
 float Dt = 0.01f;
 
 Ticker model, view, controller;
 
 bool paused = true;
-/* The single user button needs to have the PullUp resistor enabled */
-DigitalIn userbutton(P2_10,PullUp);
+/////////////////////////////////////////////////////////////
+////////////////INITIALISES LINKED LISTS/////////////////////
+/////////////////////////////////////////////////////////////
+void initialise() {
+    asteroids = static_cast<aster_t*>(malloc(sizeof(aster_t)));
+    asteroids->p.x = 0;asteroids->p.y =0;
+    asteroids->v.x = 2;asteroids->v.y = 2;
+    asteroids->next = NULL;
+    
+    Missles = static_cast<Missle_t*>(malloc(sizeof(Missle_t)));
+    Missles->next = NULL;
+}
+/////////////////////////////////////////////////////////////
+/////////GENERAL/CONTROLS BUFFER TIMING//////////////////////
+/////////////////////////////////////////////////////////////
 int main()
 {
-
+    initialise();
     init_DBuffer();
-    
-
     view.attach( draw, 0.025);
     model.attach( physics, Dt);
     controller.attach( controls, 0.1);
-    
-    lives = 5;
-    
-    /* Pause to start */
-    while( userbutton.read() ){ /* remember 1 is not pressed */
-        paused=true;
-        wait_ms(100);
-    }
     paused = false;
-    
-    while(true) {
-        /* do one of */
-        /* Wait until all lives have been used
-        while(lives>0){
-            // possibly do something game related here
-            wait_ms(200);
-        }
-        */
-        /* Wait until each life is lost
-        while( inPlay ){
-            // possibly do something game related here
-            wait_ms(200);
-        }
-        */
-    }
 }

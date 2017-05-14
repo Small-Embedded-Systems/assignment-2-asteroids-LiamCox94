@@ -1,25 +1,47 @@
-/* Asteroids Model */
 struct point {
     float x,y;
 };
 typedef struct point coordinate_t;
 typedef struct point vector_t;
-
-/* Some insitial struct types if you want to usd them */
-struct ship {
-    coordinate_t p;
-    vector_t     v;
-};
-
-/* initial struts for building linked lists */
-struct rock {
-    coordinate_t p;
-    struct rock *next;
-};
-
-struct missile {
-    coordinate_t p;
-    struct missile *next;
-};
-
+/////////////////////////////////////////////////////////////
+////////////////GENERAL DATA/////////////////////////////////
+/////////////////////////////////////////////////////////////
 void physics(void);
+void shipStop();
+void shipThrust();
+void shipHeading();
+void shipReposition();
+void shipTurn();
+void gameInfo();
+void shoot();
+/////////////////////////////////////////////////////////////
+////////////////SHIP DIRECTION/POSITION//////////////////////
+/////////////////////////////////////////////////////////////
+extern float angle;
+extern float vel_x;
+extern float vel_y;
+extern float accel;
+extern float collisionX;
+extern float collisionY;
+
+extern float angleX;
+extern float angleY;
+
+/////////////////////////////////////////////////////////////
+///////////////LINKED LIST DATA//////////////////////////////
+/////////////////////////////////////////////////////////////
+typedef struct aster_t {
+    coordinate_t p;
+    vector_t v;
+    struct aster_t* next;
+} aster_t;
+
+typedef struct Missle_t {
+    coordinate_t p;
+    vector_t v;
+    int age;
+    struct Missle_t* next;
+} Missle_t;
+
+void newMissle(Missle_t *head);
+///////////////////////////////////////////////////////
